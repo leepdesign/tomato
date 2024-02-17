@@ -1,46 +1,34 @@
-let timer;
-let totalSeconds = 0;
+document.addEventListener('DOMContentLoaded', function() {
+    var workTypeSelect = document.getElementById('workType');
+    var otherWorkTypeInput = document.getElementById('otherWorkType');
+    var dataTable = document.getElementById('dataTable');
+    var submittedDataTable = document.getElementById('submittedData').getElementsByTagName('tbody')[0];
 
-function startTimer() {
-    let minutesInput = document.getElementById("minutesInput").value;
-    if (!timer && minutesInput > 0) {
-        totalSeconds = minutesInput * 60;
-        timer = setInterval(updateTimer, 1000);
-    }
-}
+    workTypeSelect.addEventListener('change', function() {
+        if (workTypeSelect.value === '其它') {
+            otherWorkTypeInput.style.display = 'block';
+            otherWorkTypeInput.querySelector('input').setAttribute('required', 'required');
+        } else {
+            otherWorkTypeInput.style.display = 'none';
+            otherWorkTypeInput.querySelector('input').removeAttribute('required');
+        }
+    });
 
-function stopTimer() {
-    clearInterval(timer);
-    timer = null;
-}
+    var form = document.getElementById('workForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        var formData = new FormData(form);
 
-function resetTimer() {
-    clearInterval(timer);
-    timer = null;
-    totalSeconds = 0;
-    document.getElementById("timer").textContent = formatTime(totalSeconds);
-}
+        // Create a new row in the table to display submitted data
+        var newRow = submittedDataTable.insertRow();
+        var cellIndex = 0;
+        for (var pair of formData.entries()) {
+            var newCell = newRow.insertCell(cellIndex++);
+            newCell.textContent = pair[1];
+        }
 
-function updateTimer() {
-    if (totalSeconds > 0) {
-        totalSeconds--;
-        document.getElementById("timer").textContent = formatTime(totalSeconds);
-    } else {
-        stopTimer();
-    }
-}
-
-function formatTime(seconds) {
-    let minutes = Math.floor(seconds / 60);
-    let remainingSeconds = seconds % 60;
-
-    return `${formatNumber(minutes)}:${formatNumber(remainingSeconds)}`;
-}
-
-function formatNumber(number) {
-    return number < 10 ? "0" + number : number;
-}
-
-function setPresetTimer(minutes) {
-    document.getElementById("minutesInput").value = minutes;
-}
+        // Show the table with submitted data
+        dataTable.style.display = 'block';
+        form.reset(); // Reset the form
+    });
+});
