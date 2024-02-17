@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>倒计时器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="countdown">
+        <h1 id="timer">00:00</h1>
+        <div class="controls">
+            <input type="number" id="minutesInput" placeholder="输入分钟数">
+            <button onclick="startTimer()">开始</button>
+            <button onclick="stopTimer()">停止</button>
+            <button onclick="resetTimer()">重置</button>
+        </div>
+        <div class="preset-times">
+            <button onclick="setPresetTimer(30)">30分钟</button>
+            <button onclick="setPresetTimer(40)">40分钟</button>
+            <button onclick="setPresetTimer(60)">60分钟</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
